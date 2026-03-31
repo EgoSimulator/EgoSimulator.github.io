@@ -55,11 +55,6 @@ body {
     line-height: 1.6;
     /* Better touch scrolling on mobile */
     -webkit-overflow-scrolling: touch;
-    /* Prevent text selection during drag operations */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
 /* Allow text selection for readable content */

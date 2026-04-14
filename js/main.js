@@ -26,15 +26,8 @@ function initLazyVideoLoading() {
         entries.forEach(entry => {
             if (!entry.isIntersecting) return;
             const video = entry.target;
-            const source = video.querySelector('source');
-            if (source && video.dataset.src && !source.src) {
-                source.src = video.dataset.src;
-                video.load();
-                video.addEventListener('loadeddata', () => {
-                    video.currentTime = 0;
-                }, { once: true });
-            }
-            // Keep observing so re-entry after swiper unload triggers reload
+            if (video.dataset.loaded === 'true') return; // already loaded, skip
+            loadVideo(video);
         });
     }, {
         rootMargin: '400px 0px 400px 0px'
@@ -44,8 +37,31 @@ function initLazyVideoLoading() {
         videoObserver.observe(video);
     });
 
-    // Expose observer so swiper can notify it after unloading
     window._lazyVideoObserver = videoObserver;
+}
+
+function loadVideo(video) {
+    if (video.dataset.loaded === 'true') return;
+    const src = video.dataset.src;
+    if (!src) return;
+    const source = video.querySelector('source');
+    if (source) source.src = src;
+    else video.src = src;
+    video.load();
+    video.dataset.loaded = 'true';
+    video.addEventListener('loadeddata', () => {
+        video.currentTime = 0;
+    }, { once: true });
+}
+
+function unloadVideo(video) {
+    if (video.dataset.loaded !== 'true') return;
+    video.pause();
+    const source = video.querySelector('source');
+    if (source) source.src = '';
+    video.removeAttribute('src');
+    video.load();
+    video.dataset.loaded = 'false';
 }
 
 /**

@@ -247,11 +247,25 @@ function generateSlides() {
             el: '.swiper-pagination',
             clickable: true,
         },
-        allowTouchMove: false, // Prevent swiping while interacting with videos
+        allowTouchMove: false,
         on: {
             slideChange: function() {
-                // Pause all videos in this swiper when changing slides
-                this.slides.forEach(slide => {
+                const swiper = this;
+                swiper.slides.forEach((slide, i) => {
+                    const dist = Math.abs(i - swiper.activeIndex);
+                    slide.querySelectorAll('video').forEach(v => {
+                        if (dist >= 3) {
+                            // Far away: unload to free memory
+                            if (typeof unloadVideo === 'function') unloadVideo(v);
+                        } else if (dist <= 1) {
+                            // Current + adjacent: preload
+                            if (typeof loadVideo === 'function') loadVideo(v);
+                        }
+                        // dist == 2: leave as-is (already loaded or not yet needed)
+                    });
+                });
+                // Pause all videos in this swiper
+                swiper.slides.forEach(slide => {
                     slide.querySelectorAll('video').forEach(v => v.pause());
                 });
                 document.querySelectorAll('.sync-play-button').forEach(btn => {

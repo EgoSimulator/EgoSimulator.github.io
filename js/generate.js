@@ -101,7 +101,7 @@ function generateSlides() {
             
             html += `
             <div class="swiper-slide" data-sync-group="${syncGroup}">
-                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${vidName}</h4>
+                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${(typeof egovidLabels !== 'undefined' && egovidLabels[vidName]) || vidName}</h4>
                 <div class="method-selector-single" data-example="${syncGroup}" style="justify-content: center; align-items: center; margin-bottom: 1rem;">
                     <span style="font-weight: bold; margin-right: 15px;">Comparison Method:</span>
                     ${btnHtml}
@@ -149,7 +149,7 @@ function generateSlides() {
             
             html += `
             <div class="swiper-slide" data-sync-group="${syncGroup}">
-                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${vidName}</h4>
+                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${(typeof egocapLabels !== 'undefined' && egocapLabels[vidName]) || vidName}</h4>
                 <div class="comparison-grid-3col" id="${syncGroup}-grid" data-sync-group="${syncGroup}" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
                     <div class="method-col">
                         <div class="method-label" style="text-align: center; margin-bottom: 5px; font-weight: bold;">Scene & Action</div>
@@ -189,7 +189,7 @@ function generateSlides() {
             
             html += `
             <div class="swiper-slide" data-sync-group="${syncGroup}">
-                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${vidName}</h4>
+                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${(typeof agibotLabels !== 'undefined' && agibotLabels[vidName]) || vidName}</h4>
                 <div class="comparison-grid-4col" id="${syncGroup}-grid" data-sync-group="${syncGroup}" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
                     <div class="method-col">
                         <div class="method-label" style="text-align: center; margin-bottom: 5px; font-weight: bold;">Scene & Action</div>

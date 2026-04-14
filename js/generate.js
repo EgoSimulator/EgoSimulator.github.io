@@ -224,6 +224,27 @@ function generateSlides() {
     }
 
     // Initialize Swipers
+    function makeUnloadHook() {
+        return function(swiper) {
+            // Unload videos in slides that are far from active (>1 slide away)
+            swiper.slides.forEach((slide, i) => {
+                const dist = Math.abs(i - swiper.activeIndex);
+                const videos = slide.querySelectorAll('video');
+                videos.forEach(video => {
+                    const source = video.querySelector('source');
+                    if (!source) return;
+                    if (dist > 1 && video.paused && source.src) {
+                        source.src = '';
+                        video.load();
+                    } else if (dist <= 1 && !source.src && video.dataset.src) {
+                        source.src = video.dataset.src;
+                        video.load();
+                    }
+                });
+            });
+        };
+    }
+
     const swiperOptions = {
         navigation: {
             nextEl: '.swiper-button-next',
@@ -243,6 +264,7 @@ function generateSlides() {
                     const text = btn.querySelector('.play-text');
                     if (text) text.textContent = 'Play';
                 });
+                makeUnloadHook()(this);
             }
         }
     };

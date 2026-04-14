@@ -24,29 +24,32 @@ document.addEventListener('DOMContentLoaded', function() {
 function initLazyVideoLoading() {
     const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const video = entry.target;
-                const source = video.querySelector('source');
+            const video = entry.target;
+            const source = video.querySelector('source');
 
+            if (entry.isIntersecting) {
                 // Load video source from data-src attribute
                 if (source && video.dataset.src && !source.src) {
                     source.src = video.dataset.src;
                     video.load();
-                    // Show first frame once data is available
                     video.addEventListener('loadeddata', () => {
                         video.currentTime = 0;
                     }, { once: true });
                 }
-
-                // Unobserve once loaded
-                videoObserver.unobserve(video);
+            } else {
+                // Unload video when far off-screen to free memory
+                // Only unload if not currently playing and source is loaded
+                if (source && source.src && video.paused) {
+                    video.pause();
+                    source.src = '';
+                    video.load(); // triggers browser to release buffered data
+                }
             }
         });
     }, {
-        rootMargin: '200px'
+        rootMargin: '300px 0px 300px 0px' // preload slightly ahead, unload when far away
     });
 
-    // Observe all lazy videos
     const lazyVideos = document.querySelectorAll('.lazy-video');
     lazyVideos.forEach(video => {
         videoObserver.observe(video);
@@ -965,26 +968,10 @@ function initNavigationHighlight() {
 }
 
 /**
- * Video play/pause controls and optimizations
+ * Video error handling
  */
 function initVideoPlayControls() {
-    const videos = document.querySelectorAll('video');
-
-    videos.forEach(video => {
-        // Pause video when it goes out of view (save bandwidth)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting && !video.paused) {
-                    video.pause();
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
-
-        observer.observe(video);
-
-        // Error handling
+    document.querySelectorAll('video').forEach(video => {
         video.addEventListener('error', function(e) {
             console.error('Video loading error:', video.dataset.src || video.src, e);
         });

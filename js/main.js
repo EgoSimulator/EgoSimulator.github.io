@@ -24,36 +24,28 @@ document.addEventListener('DOMContentLoaded', function() {
 function initLazyVideoLoading() {
     const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
             const video = entry.target;
             const source = video.querySelector('source');
-
-            if (entry.isIntersecting) {
-                // Load video source from data-src attribute
-                if (source && video.dataset.src && !source.src) {
-                    source.src = video.dataset.src;
-                    video.load();
-                    video.addEventListener('loadeddata', () => {
-                        video.currentTime = 0;
-                    }, { once: true });
-                }
-            } else {
-                // Unload video when far off-screen to free memory
-                // Only unload if not currently playing and source is loaded
-                if (source && source.src && video.paused) {
-                    video.pause();
-                    source.src = '';
-                    video.load(); // triggers browser to release buffered data
-                }
+            if (source && video.dataset.src && !source.src) {
+                source.src = video.dataset.src;
+                video.load();
+                video.addEventListener('loadeddata', () => {
+                    video.currentTime = 0;
+                }, { once: true });
             }
+            // Keep observing so re-entry after swiper unload triggers reload
         });
     }, {
-        rootMargin: '300px 0px 300px 0px' // preload slightly ahead, unload when far away
+        rootMargin: '400px 0px 400px 0px'
     });
 
-    const lazyVideos = document.querySelectorAll('.lazy-video');
-    lazyVideos.forEach(video => {
+    document.querySelectorAll('.lazy-video').forEach(video => {
         videoObserver.observe(video);
     });
+
+    // Expose observer so swiper can notify it after unloading
+    window._lazyVideoObserver = videoObserver;
 }
 
 /**

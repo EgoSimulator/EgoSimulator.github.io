@@ -226,21 +226,18 @@ function generateSlides() {
     // Initialize Swipers
     function makeUnloadHook() {
         return function(swiper) {
-            // Unload videos in slides that are far from active (>1 slide away)
             swiper.slides.forEach((slide, i) => {
                 const dist = Math.abs(i - swiper.activeIndex);
-                const videos = slide.querySelectorAll('video');
-                videos.forEach(video => {
-                    const source = video.querySelector('source');
-                    if (!source) return;
-                    if (dist > 1 && video.paused && source.src) {
-                        source.src = '';
-                        video.load();
-                    } else if (dist <= 1 && !source.src && video.dataset.src) {
-                        source.src = video.dataset.src;
-                        video.load();
-                    }
-                });
+                // Only unload slides that are far away (>=3 away)
+                if (dist >= 3) {
+                    slide.querySelectorAll('video').forEach(video => {
+                        const source = video.querySelector('source');
+                        if (source && source.src && video.paused) {
+                            source.src = '';
+                            video.load();
+                        }
+                    });
+                }
             });
         };
     }
@@ -257,12 +254,25 @@ function generateSlides() {
         allowTouchMove: false, // Prevent swiping while interacting with videos
         on: {
             slideChange: function() {
-                // Pause all videos when changing slides to save performance
+                // Pause all videos when changing slides
                 document.querySelectorAll('video').forEach(v => v.pause());
                 document.querySelectorAll('.sync-play-button').forEach(btn => {
                     btn.classList.remove('playing');
                     const text = btn.querySelector('.play-text');
                     if (text) text.textContent = 'Play';
+                });
+                // Reload videos in current and adjacent slides if they were unloaded
+                const swiper = this;
+                swiper.slides.forEach((slide, i) => {
+                    if (Math.abs(i - swiper.activeIndex) <= 1) {
+                        slide.querySelectorAll('video').forEach(video => {
+                            const source = video.querySelector('source');
+                            if (source && !source.src && video.dataset.src) {
+                                source.src = video.dataset.src;
+                                video.load();
+                            }
+                        });
+                    }
                 });
                 makeUnloadHook()(this);
             }

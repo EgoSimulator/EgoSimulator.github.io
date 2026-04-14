@@ -1,7 +1,8 @@
 function formatEgoDexTitle(vidName) {
-    // Remove trailing numeric segments (e.g. _57_0_80), replace _ with space, title case
     const cleaned = vidName.replace(/(_\d+)+$/, '');
-    return cleaned.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    const title = cleaned.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    const tag = (typeof egodexTags !== 'undefined') && egodexTags[cleaned];
+    return tag ? `${title} <span style="font-size:0.8em; font-weight:normal; color:var(--primary, #00f0ff);">(${tag})</span>` : title;
 }
 
 function generateSlides() {
@@ -101,7 +102,7 @@ function generateSlides() {
             
             html += `
             <div class="swiper-slide" data-sync-group="${syncGroup}">
-                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${(typeof egovidLabels !== 'undefined' && egovidLabels[vidName]) || vidName}</h4>
+                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${(typeof egovidLabels !== 'undefined' && egovidLabels[vidName]) || vidName}${(typeof egovidTags !== 'undefined' && egovidTags[vidName]) ? ` <span style="font-size:0.8em; font-weight:normal; color:var(--primary, #00f0ff);">(${egovidTags[vidName]})</span>` : ''}</h4>
                 <div class="method-selector-single" data-example="${syncGroup}" style="justify-content: center; align-items: center; margin-bottom: 1rem;">
                     <span style="font-weight: bold; margin-right: 15px;">Comparison Method:</span>
                     ${btnHtml}

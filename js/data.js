@@ -72,7 +72,25 @@ const egovidLabels = {
     "ae9cb412-7b93-49ae-bb46-306dc74d5fe3_18079_18199": "Set the Cup Aside"
 };
 
-const agibotLabels = {
+const egodexTags = {
+    "assemble_disassemble_furniture_bench_chair": "Rotation",
+    "assemble_disassemble_furniture_bench_desk": "Rotation",
+    "assemble_disassemble_legos": "Small Object",
+    "basic_fold": "Flexible Object",
+    "flip_pages": "Flexible Object",
+    "fold_stack_unstack_unfold_cloths": "Flexible Object",
+    "insert_remove_bagging": "Unseen Flexible Object",
+    "measure_objects": "Flexible Object",
+    "scoop_dump_ice": "Ice Dynamics",
+    "screw_unscrew_allen_fixture": "Assembling"
+};
+
+const egovidTags = {
+    "0f0dde23-36e9-4470-ba96-b85a39e45ed9_20749_20869": "Wide-range Motion",
+    "1c5dbe17-32ed-4cb3-b657-da5eb15689ac_22155_22275": "Precise Control",
+    "6ce93897-2db9-4dca-bc44-2c46fa3a1b39_23262_23382": "Wide-range Motion",
+    "94d5eff8-0fac-4719-adf2-5c0208ab89f7_89284_89404": "Liquid Dynamics"
+};
     "358-683347-001": "Put the Bread into the Toaster",
     "362-659751-011": "Fold the Clothes",
     "362-670844-001": "Fold the Clothes",

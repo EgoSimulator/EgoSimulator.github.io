@@ -1,8 +1,21 @@
+const egodexTags = {
+    "assemble_disassemble_furniture_bench_chair": "(Rotation)",
+    "assemble_disassemble_furniture_bench_desk": "(Rotation)",
+    "assemble_disassemble_legos": "(Small Object)",
+    "basic_fold": "(Flexible Object)",
+    "flip_pages": "(Flexible Object)",
+    "fold_stack_unstack_unfold_cloths": "(Flexible Object)",
+    "insert_remove_bagging": "(Unseen Flexible Object)",
+    "measure_objects": "(Flexible Object)",
+    "scoop_dump_ice": "(Ice Dynamics)",
+    "screw_unscrew_allen_fixture": "(Assembling)"
+};
+
 function formatEgoDexTitle(vidName) {
     const cleaned = vidName.replace(/(_\d+)+$/, '');
     const title = cleaned.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-    const tag = (typeof egodexTags !== 'undefined') && egodexTags[cleaned];
-    return tag ? `${title} <span style="font-size:0.8em; font-weight:normal; color:var(--primary, #00f0ff);">(${tag})</span>` : title;
+    const tag = egodexTags[cleaned];
+    return tag ? `${title} <span style="font-size:0.85em; color:var(--primary, #00f0ff); font-weight:normal;">${tag}</span>` : title;
 }
 
 function generateSlides() {
@@ -102,7 +115,7 @@ function generateSlides() {
             
             html += `
             <div class="swiper-slide" data-sync-group="${syncGroup}">
-                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${(typeof egovidLabels !== 'undefined' && egovidLabels[vidName]) || vidName}${(typeof egovidTags !== 'undefined' && egovidTags[vidName]) ? ` <span style="font-size:0.8em; font-weight:normal; color:var(--primary, #00f0ff);">(${egovidTags[vidName]})</span>` : ''}</h4>
+                <h4 class="slide-title" style="text-align: center; margin-bottom: 1rem;">${(typeof egovidLabels !== 'undefined' && egovidLabels[vidName]) || vidName}</h4>
                 <div class="method-selector-single" data-example="${syncGroup}" style="justify-content: center; align-items: center; margin-bottom: 1rem;">
                     <span style="font-weight: bold; margin-right: 15px;">Comparison Method:</span>
                     ${btnHtml}

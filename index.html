@@ -183,8 +183,9 @@
         <div class="nav-container">
             <a href="#title" class="nav-title">EgoSim</a>
             <div class="nav-links">
+                <a href="#abstract">Demo</a>
+                <a href="#overview">Overview</a>
                 <a href="#comparisons">Comparisons</a>
-                <a href="#abstract">Abstract</a>
                 <a href="#continuous-gen">Continuous Gen</a>
                 <a href="#egocap">EgoCap</a>
                 <a href="#agibot">Robot Gen</a>
@@ -244,12 +245,26 @@
 
     <!-- Abstract (Teaser) -->
     <section id="abstract" class="bg-alt" style="padding: 2.5rem 0;">
-        <div class="container" style="text-align: center;">
-            <img src="images/teaser.png" alt="EgoSim Teaser" style="width: 100%; max-width: 960px; border-radius: 10px; border: 1px solid var(--border);">
-            <p style="margin-top: 1rem; font-size: 0.88rem; color: var(--text-muted, #94a3b8); max-width: 860px; margin-left: auto; margin-right: auto; line-height: 1.7; text-align: justify;">
-                Given a scene image and a sequence of actions, <strong style="color: var(--text, #e2e8f0);">EgoSim</strong> generates temporally and spatially consistent egocentric observations and high-quality dexterous interactions. EgoSim also persistently updates the 3D scene state for continuous simulation. We propose a data construction pipeline to leverage web-scale egocentric video data, and thus strengthen the generalization ability of EgoSim with scalable scene-interaction pairs. EgoSim also exhibits strong few-shot adaptation capability to real-world scenarios and diverse robotic embodiments.
-            </p>
-            <div style="max-width: 860px; margin: 2rem auto 0; text-align: left;">
+        <div class="container">
+            <!-- Demo Video -->
+            <h2 style="margin-bottom: 1rem;">Demo Video</h2>
+            <div style="text-align: center;">
+                <video controls playsinline preload="metadata" style="width: 100%; max-width: 960px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 2rem;">
+                    <source src="videos/demovideo.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- Overview -->
+            <div id="overview" style="text-align: center;">
+                <h2 style="margin-bottom: 1rem; text-align: left;">Overview</h2>
+                <img src="images/teaser.png" alt="EgoSim Teaser" style="width: 100%; max-width: 960px; border-radius: 10px; border: 1px solid var(--border);">
+                <p style="margin-top: 1rem; font-size: 0.88rem; color: var(--text-muted, #94a3b8); max-width: 860px; margin-left: auto; margin-right: auto; line-height: 1.7; text-align: justify;">
+                    Given a scene video and a sequence of actions, <strong style="color: var(--text, #e2e8f0);">EgoSim</strong> generates temporally and spatially consistent egocentric observations and high-quality dexterous interactions. EgoSim also persistently updates the 3D scene state for continuous simulation. We propose a data construction pipeline to leverage web-scale egocentric video data, and thus strengthen the generalization ability of EgoSim with scalable scene-interaction pairs. EgoSim also exhibits strong few-shot adaptation capability to real-world scenarios and diverse robotic embodiments.
+                </p>
+            </div>
+
+            <!-- Abstract -->
+            <div style="max-width: 860px; margin: 2rem auto 0;">
                 <h2 style="font-size: 1.4rem; margin-bottom: 1rem;">Abstract</h2>
                 <p style="font-size: 0.95rem; color: var(--text, #e2e8f0); line-height: 1.8; text-align: justify;">
                     We introduce EgoSim, a closed-loop egocentric world simulator that generates spatially consistent interaction videos and persistently updates the underlying 3D scene state for continuous simulation. Existing egocentric simulators either lack explicit 3D grounding, causing structural drift under viewpoint changes, or treat the scene as static, failing to update world states across multi-stage interactions. EgoSim addresses both limitations by modeling 3D scenes as updatable world states. We generate embodiment interactions via a Geometry-action-aware Observation Simulation model, with spatial consistency from an Interaction-aware State Updating module. To overcome the critical data bottleneck posed by the difficulty in acquiring densely aligned scene–interaction training pairs, we design a scalable pipeline that extracts static point clouds, camera trajectories, and embodiment actions from in-the-wild large-scale monocular egocentric videos. We further introduce EgoCap, a capture system that enables low-cost real-world data collection with uncalibrated smartphones. Extensive experiments demonstrate that EgoSim significantly outperforms existing methods in terms of visual quality, spatial consistency, and generalization to complex scenes and in-the-wild dexterous interactions, while supporting cross-embodiment transfer to robotic manipulation.
